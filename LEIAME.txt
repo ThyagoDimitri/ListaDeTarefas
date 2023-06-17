@@ -1,0 +1,51 @@
+﻿O projeto foi feito, em maior parte, conforme o que foi pedido. 
+Poucas direções diferentes foram tomadas por questão de usabilidade ou design.
+
+•Conforme o solicitado, foi criado um projeto no padrão MVC, utilizando SqlServer Express para o banco de dados. 
+•Como ORM foi escolhido o Entity-Framework, por maior praticidade.
+•O projeto foi desenvolvido em ASP.NET no Visual Studio. Por padrão, um projeto ASP.NET já inclui o Bootstrap e todas suas dependências, mas ainda assim todos os pacotes foram atualizados para sua ultima versão antes de iniciar o desenvolvimento.
+•Foi mantido o template padrão do Bootstrap.
+•Foi utilizado Javascript/Jquery para criação de alguns scripts das Views.
+
+Para que a aplicação funcione corretamente no momento da revisão, deve-se alterar a connectionString no arquivo Web.config:
+
+  <connectionStrings>
+    <add name="DatabaseConnection" providerName="System.Data.SqlClient" connectionString="data source=WILLIAM-PC\SQLEXPRESS; database=IMPACTAGERTAR; integrated security = SSPI;" />
+  </connectionStrings>
+  
+Em "data source=WILLIAM-PC\SQLEXPRESS;" alterar o valor do campo para o nome do servidor onde será realizado os testes.
+
+Login:
+•Conforme o solicitado, a aplicação dá inicio a uma tela de Login, onde o usuário padrão "admin/admin" já está cadastrado.
+•Ao tentar logar com um usuário inexistente, ou credenciais incorretas, o usuário será notificado.
+
+Menu Principal:
+•Foi optado por uma NavBar como menu horizontal para melhor usabilidade e manter o design mais limpo e direto.
+•Também foi decidido o usode uma NavBar para manter as opções do menu acessíveis para o usuário em qualquer momento da navegação.
+•Caso esteja logado com um usuário sem permissões de administrador, não será possível acessar o menu de cadastro de usuários.
+
+Menu Usuário:
+•Na tela de criação de usuários há uma validação para se certificar que todos os campos estão preenchidos
+•Também há uma validação para se certificar de que o usuário a ser cadastrado já não existe no banco.
+•Foi optado por utilizar modais em vez de alertas para as notificações para manter o design da pagina menos intrusivo e mais coerente, visto que alertas podem interferir na navegação do usuário.
+
+Menu Tarefa:
+•Na tela de consulta e criação de tarefas, optei por trocar o nome do campo "Título da tarefa" solicitado para "Descrição da tarefa", para melhor clareza.
+•Ao marcar/desmarcar uma tarefa como concluida, os dados também são persistidos no banco de dados, para não haver perda de informação.
+•Não foi mencionado no documento, mas cada usuário só pode visualizar suas próprias tarefas.
+•Também optei por utilizar um modal, e não um alerta, para confirmação de remoção de registro.
+
+Banco de dados:
+•Foram criadas apenas duas tabelas para atender o projeto. o código das tabelas podem ser encontrados no arquivo SQL.txt
+•Foi optado por incluir um sufixo aos nomes das tabelas e suas colunas para melhor identificação.
+•As chaves de cada tabela são autonumeráveis, para melhor usabilidade.
+•Na tabela de tarefas há um "ON DELETE CASCADE" para evitar possíveis exceções.
+
+Observações:
+Também incluí um vídeo do projeto em execução e sua navegação.
+
+Caso a aplicação não execute corretamente, ou alguns recursos visuais estejam mal posicionados/não funcionais, segue as versões dos pacotes instalados do projeto:
+Bootstrap 4.5.0
+Entity-Framework 6.4.4
+JQuery 3.5.1
+popper.js 1.16.1

@@ -1,0 +1,14 @@
+﻿@{
+    ViewBag.Title = "Principal";
+    Layout = "~/Views/Shared/NavbarLayout.cshtml";
+}
+
+<div class="container">
+    <br />
+    <h5>Olá @HttpContext.Current.Session["usuario"].ToString().</h5>
+    Selecione uma das opções do menu acima para começar.
+</div>
+
+
+
+

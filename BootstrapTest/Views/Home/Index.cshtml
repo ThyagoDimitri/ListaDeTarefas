@@ -1,0 +1,29 @@
+﻿<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Gerênciador de Tarefas</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<div class="container">
+    <h1>Gerênciador de Tarefas</h1>
+
+    Bem-vindo! Por favor faça login para continuar.
+    <br>
+    <br>
+    <form action="Verify" method="post">
+        <label class="text" for="name">Login:</label>
+        <input type="text" id="name" name="USU_NOME"><br><br>
+        <label for="password">Senha:</label>
+        <input type="password" id="password" name="USU_SENHA"><br><br>
+        <input class="btn btn-primary" type="submit" value="Entrar">
+    </form>
+    <div class="container body-content">
+        @RenderBody()
+    </div>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</div>
+

@@ -1,0 +1,232 @@
+﻿
+@{
+    ViewBag.Title = "Tarefa";
+    Layout = "~/Views/Shared/NavbarLayout.cshtml";
+}
+@model IEnumerable<BootstrapTest.Models.Tarefa>
+
+<br />
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#novaTarefa">Nova Tarefa</button>
+<br />
+<br />
+<style>
+    .strike {
+        text-decoration-line: line-through;
+    }
+</style>
+<script>
+
+
+    $(function () {
+        $('input[name="chkConcluida"]:checked').closest('tr').addClass('bg-success');
+        $('input[name="chkConcluida"]:checked').closest('tr').addClass('strike');
+    });
+
+    $(document).ready(function () {
+        $("input[name='chkConcluida']").on('change', function () {
+            $(this).closest('tr').toggleClass('bg-success', $(this).is(':checked'));
+            $(this).closest('tr').toggleClass('strike', $(this).is(':checked'));
+        });
+    })
+
+    function MudarCheckbox(checkboxInput, id) {
+        $.ajax({
+            type: 'POST',
+            url: "MarcarConcluido",
+            data: { newValue: checkboxInput.checked, tarID: id },
+            dataType: 'json'
+        });
+    }
+
+    $(document).on('show.bs.modal', '#editarTarefa', function (e) {
+
+        var tarefaId = $(e.relatedTarget).data('tarefa-id');
+        var tarefaDescricao = $(e.relatedTarget).data('tarefa-descricao');
+        $(".modal-body #hiddenTarefaId").val(tarefaId)
+        $(".modal-body #editarDescricaoDaTarefa").val(tarefaDescricao)
+    });
+
+
+    $(document).on('show.bs.modal', '#removerTarefa', function (e) {
+
+        var tarefaId = $(e.relatedTarget).data('tarefa-id');
+        $(".modal-body #hiddenTarefaIdDeletada").val(tarefaId)
+    });
+
+    $(document).ready(function () {
+        $('#erroSalvarTarefa').modal('show')
+    });
+
+
+
+</script>
+
+<h4>Suas tarefas:</h4>
+<br />
+<div class="container">
+    <table id="tarefa" class="table table-bordered" style="width:100%">
+        <tr>
+            <th style="display:none">
+                @Html.DisplayNameFor(model => model.TAR_ID)
+            </th>
+            <th class="col-sm text-muted" style="width: 10%">
+                @Html.DisplayNameFor(model => model.TAR_CONCLUIDA)
+            </th>
+            <th class="col-sm text-muted" style="width: 72.9%">
+                @Html.DisplayNameFor(model => model.TAR_DESCRICAO)
+            </th>
+            <th class="col-sm text-muted">
+                Ações
+            </th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            if (item.TAR_CONCLUIDA)
+            {
+                <tr>
+                    <td style="display:none">
+                        @Html.DisplayFor(modelItem => item.TAR_ID)
+
+                    </td>
+                    <td class="text-center align-middle">
+                        <input type="checkbox" name="chkConcluida" id="chkConcluida" onclick="MudarCheckbox(this, @item.TAR_ID)" checked />
+                    </td>
+                    <td class="h5 align-middle">
+                        @Html.DisplayFor(modelItem => item.TAR_DESCRICAO)
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" href="#editarTarefa" data-tarefa-descricao="@item.TAR_DESCRICAO" data-tarefa-id="@item.TAR_ID">Editar</button>
+                        <button type="button" class="btn btn-danger" data-toggle="modal" href="#removerTarefa" data-tarefa-id="@item.TAR_ID">Remover</button>
+                    </td>
+                </tr>
+            }
+            else
+            {
+                <tr>
+                    <td style="display:none">
+                        @Html.DisplayFor(modelItem => item.TAR_ID)
+                    </td>
+                    <td class="text-center align-middle">
+                        <input type="checkbox" name="chkConcluida" id="chkConcluida" onclick="MudarCheckbox(this, @item.TAR_ID)" />
+                    </td>
+                    <td class="h5 align-middle">
+                        @Html.DisplayFor(modelItem => item.TAR_DESCRICAO)
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" href="#editarTarefa" data-tarefa-descricao="@item.TAR_DESCRICAO" data-tarefa-id="@item.TAR_ID">Editar</button>
+                        <button type="button" class="btn btn-danger" data-toggle="modal" href="#removerTarefa" data-tarefa-id="@item.TAR_ID">Remover</button>
+                    </td>
+                </tr>
+            }
+        }
+
+    </table>
+</div>
+
+
+<div class="modal fade" id="novaTarefa" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="novaTarefaModalLabel">Nova Tarefa</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="SalvarTarefa" method="post">
+                <div class="modal-body">
+                    <div class="form-groupd">
+                        <label for="descricaoDaTarefa" class="col-form-label">Descrição da tarefa</label>
+                        <textarea class="form-control" style="min-width: 100%" id="descricaoDaTarefa" name="TAR_DESCRICAO"></textarea>
+                    </div>
+                    <br />
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="concluidaCheck" name="TAR_CONCLUIDA">
+                        <label class="form-check-label" for="concluidaCheck">Já foi concluida</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                    <button type="submit" class="btn btn-primary">Adicionar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="editarTarefa" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="novaTarefaModalLabel">Editar Tarefa</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="EditarTarefa" method="post">
+                <div class="modal-body">
+                    <div class="form-groupd" style="display:none">
+                        <label for="hiddenTarefaId" class="col-form-label">IdDaTarefa</label>
+                        <textarea class="form-control" id="hiddenTarefaId" name="TAR_ID"></textarea>
+                    </div>
+                    <div class="form-groupd">
+                        <label for="editarDescricaoDaTarefa" class="col-form-label">Descrição da tarefa</label>
+                        <textarea class="form-control" style="min-width: 100%" id="editarDescricaoDaTarefa" name="TAR_DESCRICAO"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                    <button type="submit" class="btn btn-primary">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="removerTarefa" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="novaTarefaModalLabel">Confirmação</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="DeletarTarefa" method="post">
+                <div class="modal-body">
+                    <h6>Tem certeza que deseja deletar esta tarefa?</h6>
+                    <div class="form-groupd" style="display:none">
+                        <label for="hiddenTarefaIdDeletada" class="col-form-label">IdDaTarefaDeletada</label>
+                        <textarea class="form-control" id="hiddenTarefaIdDeletada" name="TAR_ID"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Não</button>
+                    <button type="submit" class="btn btn-danger">Sim</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+@if (ViewBag.Message == "campoEmBranco")
+{
+    <div class="modal fade" id="erroSalvarTarefa" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="mensagemBranco">Erro</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <text>O campo "Descrição da tarefa" não pode estar vazio.</text>
+                </div>
+            </div>
+        </div>
+    </div>
+}

@@ -1,0 +1,51 @@
+﻿<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Gerênciador de Tarefas</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/jquery")
+    @*@Scripts.Render("~/bundles/popper")*@
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<style>
+    html, body {
+        height: 100%;
+        margin-top: -25px;
+    }
+</style>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand">Operações</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="nav navbar-nav">
+                @if (@HttpContext.Current.Session["permissao"].ToString() == "admin")
+                {
+                    <li class="nav-item">
+                        @Html.ActionLink("Usuário", "Usuario", null, new { @class = "nav-link" })
+                    </li>
+                }
+                <li class="nav-item">
+                    @Html.ActionLink("Tarefas", "Tarefa", null, new { @class = "nav-link" })
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    @Html.ActionLink("Sair", "Logout", null, new { @class = "nav-link" })
+                </li>
+            </ul>
+
+
+        </div>
+    </div>
+</nav>
+
+<div class="container body-content">
+    @RenderBody()
+</div>

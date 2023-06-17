@@ -1,0 +1,69 @@
+﻿
+@{
+    ViewBag.Title = "Usuario";
+    Layout = "~/Views/Shared/NavbarLayout.cshtml";
+}
+<script>
+    $(document).ready(function () {
+        $('#erroSalvarUsuario').modal('show');
+    });
+</script>
+
+<form action="SalvarUsuario" method="post" id="dadosUsuario">
+    <br />
+    <h4>Insira os dados do novo usuário a ser cadastrado:</h4>
+    <br />
+    <label class="text" for="name">Nome:</label>
+    <input type="text" id="name" name="USU_NOME"><br><br>
+    <label class="text" for="name">E-mail:</label>
+    <input type="text" id="name" name="USU_EMAIL"><br><br>
+    <label for="password">Senha:</label>
+    <input type="password" id="password" name="USU_SENHA"><br><br>
+    <label for="permission">Nível de permissão:</label>
+    <select name="USU_PERMISSAO" id="permission">
+        <option value="admin">Administrador</option>
+        <option value="user">Usuário</option>
+    </select>
+    <br />
+    <br />
+    <input class="btn btn-primary" type="submit" value="Salvar">
+    <br />
+</form>
+
+@if (ViewBag.Message == "jaCadastrado")
+{
+    <div class="modal fade" id="erroSalvarUsuario" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="mensagemExiste">Erro</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <text>Já existe um usuário cadastrado com esse nome.</text>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@if (ViewBag.Message == "campoEmBranco")
+{
+    <div class="modal fade" id="erroSalvarUsuario" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="mensagemBranco">Erro</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <text>Preencha todos os campos corretamente.</text>
+                </div>
+            </div>
+        </div>
+    </div>
+}
